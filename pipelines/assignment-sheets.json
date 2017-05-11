@@ -1,0 +1,79 @@
+{
+  "specVersion": 1,
+  "pipelineVersion": 1,
+  "name": "Sinhronizacija assignment-a sa Google Sheets",
+  "description": "Kada student uradi submit za odredjeni assignment, u izabrani Google Sheets fajl se u zadatoj koloni za tog studenta upise zadata vrednost.",
+  "author": "Marko Pavlovic",
+  "license": "GPL-3.0",
+  "trigger": {
+    "type": "moodleEvent",
+    "eventName": "\\some\\moodle\\event"
+  },
+  "params": [
+    {
+      "id": "moodleAssignmentId",
+      "type": "text",
+      "label": "Izaberite zadatak"
+    },
+    {
+      "id": "googleSheetId",
+      "type": "text",
+      "label": "Izaberite Google Sheets dokument",
+    },
+    {
+      "id": "googleSheetKeyColumn",
+      "type": "text",
+      "label": "Unesite kolonu koja sadrzi indeks studenta"
+    },
+    {
+      "id": "googleSheetValueColumn",
+      "type": "text",
+      "label": "Unesite kolonu u koju ce se upisati vrednost"
+    },
+    {
+      "id": "googleSheetsValue",
+      "type": "text",
+      "label": "Unesite vrednost koju treba upisati"
+    }
+  ],
+  "processors": [
+    {
+      "type": "filter",
+      "conditions": [
+        {
+          "type": "equal",
+          "op1": {
+            "source": "param",
+            "paramId": "moodleAssignmentId"
+          },
+          "op2": {
+            "source": "triggerData",
+            "field": "objectid"
+          }
+        }
+      ]
+    },
+    {
+      "type": "middlemanRequest",
+      "url": "/api/google/sheets/update",
+      "params": {
+        "sheetId": {
+          "source": "param",
+          "paramId": "googleSheetId"
+        },
+        "keyColumn": {
+          "source": "param",
+          "paramId": "googleSheetKeyColumn"
+        },
+        "valueColumn": {
+          "source": "param",
+          "paramId": "googleSheetValueColumn"
+        },
+        "value": {
+          "source": "param",
+          "paramId": "googleSheetsValue"
+        }
+      }
+    }
+  ]
+}
