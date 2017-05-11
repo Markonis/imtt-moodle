@@ -18,7 +18,7 @@
     {
       "id": "googleSheetId",
       "type": "text",
-      "label": "Izaberite Google Sheets dokument",
+      "label": "Izaberite Google Sheets dokument"
     },
     {
       "id": "googleSheetKeyColumn",
