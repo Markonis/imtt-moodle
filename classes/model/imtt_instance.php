@@ -20,6 +20,10 @@ class imtt_instance {
         $this->provider_access_token = $array['provider_access_token'];
         $this->configuration_json    = $array['configuration_json'];
         $this->event_names           = $array['event_names'];
+
+        if ($this->configuration_json != null) {
+            $this->configuration = json_decode($this->configuration_json);
+        }
     }
 
     public static function find_by_course_id($DB, $course_id) {

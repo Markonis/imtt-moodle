@@ -18,7 +18,9 @@ class imtt_main_page implements renderable, templatable {
     /**
      * Construct the page renderable and build the Google OAuth client.
      */
-    public function __construct($DB, $params) {
+    public function __construct($params) {
+        $this->DB = $params['DB'];
+        $this->PAGE = $params['PAGE'];
         $this->course = $params['course'];
         $this->error = $params['error'];
 
@@ -26,13 +28,15 @@ class imtt_main_page implements renderable, templatable {
             new \local_imtt\auth\google_auth($this->course->id);
 
         $this->imtt_instance =
-            \local_imtt\model\imtt_instance::find_by_course_id($DB, $this->course->id);
+            \local_imtt\model\imtt_instance::find_by_course_id($this->DB, $this->course->id);
 
-        $this->pipelines = self::load_pipelines();
+        $this->pipelines_json = self::load_pipelines_json();
+
+        $this->PAGE->requires->js_call_amd('local_imtt/configuration_editor', 'init');
     }
 
 
-    public static function load_pipelines() {
+    public static function load_pipelines_json() {
         $pipelines_dir = dirname(dirname(__DIR__)).'/pipelines';
         $all_files = scandir($pipelines_dir);
         $pipelines = array();
@@ -46,7 +50,7 @@ class imtt_main_page implements renderable, templatable {
             }
         }
 
-        return $pipelines;
+        return json_encode($pipelines);
     }
 
     /**
@@ -61,13 +65,12 @@ class imtt_main_page implements renderable, templatable {
         $data->course_id = $this->course->id;
         $data->error = $this->error;
         $data->auth_url = $this->google_auth->auth_url->out(false);
-        $data->pipelines = $this->pipelines;
+        $data->pipelines_json = $this->pipelines_json;
 
         if ($this->imtt_instance != false) {
-            $data->imtt_id = $this->imtt_instance->id;
-            $data->imtt_configuration = $this->imtt_instance->configuration_json;
+            $data->imtt = $this->imtt_instance;
         } else {
-            $data->imtt_id = -1;
+            $data->imtt = null;
         }
 
         return $data;

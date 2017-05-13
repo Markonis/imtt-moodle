@@ -11,11 +11,10 @@ $PAGE->set_heading('If Moodle Than That');
 $PAGE->set_pagelayout('standard');
 
 $output = $PAGE->get_renderer('local_imtt');
-$params = array('course' => $COURSE, 'error' => $error);
-$page = new \local_imtt\output\imtt_main_page($DB, $params);
 
 echo $output->header();
+$page = new \local_imtt\output\imtt_main_page(array(
+    'PAGE' => $PAGE, 'DB' => $DB, 'course' => $COURSE, 'error' => $error));
 echo $output->render_page($page);
 echo $output->footer();
-
 ?>
