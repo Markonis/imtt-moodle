@@ -59,7 +59,7 @@ class imtt_instance {
 
     public function update($params) {
         $data = array_merge($params, array('id' => $this->id));
-        $result = $this->$DB->update_record('local_imtt', $data);
+        $result = $this->DB->update_record('local_imtt', $data);
         return $result;
     }
 
