@@ -24,9 +24,9 @@ define(['jquery', 'local_imtt/vue', 'core/ajax'], function($, Vue, ajax) {
                 data: {
                     imttInstance: {
                         id: readJSONAttr($el, 'data-imtt-id', null),
-                        configuration: {
-                            pipelines: readJSONAttr($el, 'data-imtt-configuration', [])
-                        }
+                        configuration: readJSONAttr($el, 'data-imtt-configuration', {
+                            pipelines: []
+                        })
                     },
                     editor: {
                         pipelines: editorPipelines
@@ -43,7 +43,20 @@ define(['jquery', 'local_imtt/vue', 'core/ajax'], function($, Vue, ajax) {
                             .pipelines.splice(index, 1);
                     },
                     save: function() {
+                        var self = this;
+                        var request = {
+                            methodname: 'local_imtt_save_configuration',
+                            args: {
+                                imtt_instance: {
+                                    id: self.imttInstance.id,
+                                    configuration_json: JSON.stringify(self.imttInstance.configuration)
+                                }
+                            }
+                        };
 
+                        ajax.call([request])[0].done(function(response) {
+                            console.log(response);
+                        });
                     }
                 }
             });

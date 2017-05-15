@@ -32,7 +32,9 @@ class imtt_main_page implements renderable, templatable {
 
         $this->pipelines_json = self::load_pipelines_json();
 
-        $this->PAGE->requires->js_call_amd('local_imtt/configuration_editor', 'init');
+        if ($this->imtt_instance != false) {
+            $this->PAGE->requires->js_call_amd('local_imtt/configuration_editor', 'init');
+        }
     }
 
 
