@@ -22,7 +22,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017051000;
+$plugin->version   = 2017051502;
 $plugin->requires  = 2015111600;
 $plugin->component = 'local_imtt';
 $plugin->maturity  = MATURITY_ALPHA;
