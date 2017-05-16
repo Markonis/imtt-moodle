@@ -59,8 +59,8 @@ function xmldb_local_imtt_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2017051000, 'local', 'imtt');
     }
 
-    if ($oldversion < 2017051502) {
-        upgrade_plugin_savepoint(true, 2017051502, 'local', 'imtt');
+    if ($oldversion < 2017051601) {
+        upgrade_plugin_savepoint(true, 2017051601, 'local', 'imtt');
     }
 }
 ?>

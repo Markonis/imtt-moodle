@@ -49,7 +49,7 @@ class local_imtt_external extends external_api {
         // Security checks
         $context = get_context_instance(CONTEXT_COURSE, $db_imtt_instance->course_id);
         self::validate_context($context);
-        require_capability('local/imtt:save_configuration', $context);
+        require_capability('local/imtt:save_instance_configuration', $context);
 
         if ($db_imtt_instance == false) {
             throw new invalid_parameter_exception('Invalid imtt instance id');
