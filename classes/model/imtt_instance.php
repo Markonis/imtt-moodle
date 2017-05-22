@@ -19,6 +19,7 @@ class imtt_instance {
         $this->provider_name         = $array['provider_name'];
         $this->provider_access_token = $array['provider_access_token'];
         $this->configuration_json    = $array['configuration_json'];
+        $this->configuration         = json_decode($this->configuration_json);
         $this->event_names           = $array['event_names'];
 
         if ($this->configuration_json != null) {
@@ -46,6 +47,15 @@ class imtt_instance {
         } else{
             return new imtt_instance($DB, $record);
         }
+    }
+
+    public static function all($DB) {
+        $records = $DB->get_records($table,array('foo'=>'bar'));
+        $all = array();
+        foreach ($records as $rec) {
+            array_push($all, new imtt_instance($DB, $rec));
+        }
+        return $all;
     }
 
     public static function create($DB, $params) {
