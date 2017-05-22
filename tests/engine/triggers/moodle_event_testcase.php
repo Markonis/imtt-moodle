@@ -36,7 +36,7 @@ class local_imtt_moodle_event_testcase extends basic_testcase {
         $event->eventname = '\\test\\event';
 
         $result = $trigger->extract_data($event);
-        $this->assertEquals($result->eventname, '\\test\\event');
+        $this->assertEquals($result['eventname'], '\\test\\event');
     }
 }
 

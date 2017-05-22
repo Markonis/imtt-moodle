@@ -12,7 +12,7 @@ class moodle_event extends base {
     }
 
     public function extract_data($event) {
-        return $event;
+        return (array) $event;
     }
 }
 
