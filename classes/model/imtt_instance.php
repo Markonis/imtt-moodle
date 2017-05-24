@@ -25,6 +25,9 @@ class imtt_instance {
         if ($this->configuration_json != null) {
             $this->configuration = json_decode($this->configuration_json);
         }
+
+        $this->pipeline_data = array(
+            'provider_access_token' => $this->provider_access_token);
     }
 
     public static function find_by_course_id($DB, $course_id) {

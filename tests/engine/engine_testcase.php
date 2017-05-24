@@ -30,9 +30,10 @@ class local_imtt_engine_testcase extends basic_testcase {
     public function test_create_pipeline() {
         global $DB;
         $engine = new engine\engine(array('DB' => $DB));
-        $pipeline = $engine->create_pipeline('td', 'par', 'proc');
+        $pipeline = $engine->create_pipeline('ipd', 'td', 'par', 'proc');
 
         $this->assertInstanceOf(engine\pipeline::class, $pipeline);
+        $this->assertEquals($pipeline->instance_pipeline_data, 'ipd');
         $this->assertEquals($pipeline->trigger_data, 'td');
         $this->assertEquals($pipeline->params, 'par');
         $this->assertEquals($pipeline->processors, 'proc');
@@ -79,6 +80,10 @@ class local_imtt_engine_testcase extends basic_testcase {
             ->getMock();
 
         $imtt_instance = new stdClass();
+
+        $imtt_instance->pipeline_data = array(
+            'provider_access_token' => 'pat');
+
         $imtt_instance->configuration = array(
             'pipelines' => array('pipeline-config'));
 
@@ -106,7 +111,7 @@ class local_imtt_engine_testcase extends basic_testcase {
 
         $engine->expects($this->never())->method('create_trigger');
 
-        $engine->process_event(null, 'trigger-type-2', $pipeline_config);
+        $engine->process_event(null, 'trigger-type-2', $pipeline_config, 'ipd');
     }
 
     public function test_process_event_with_correct_trigger_type_should_not_process() {
@@ -118,35 +123,39 @@ class local_imtt_engine_testcase extends basic_testcase {
             ->setConstructorArgs(array(array('DB' => $DB)))
             ->setMethods([
                 'create_trigger',
-                'should_process_trigger',
-                'process_trigger'])
+                'should_process_pipeline',
+                'process_pipeline'])
             ->getMock();
 
         $engine->expects($this->once())->method('create_trigger');
-        $engine->expects($this->never())->method('process_trigger');
+        $engine->expects($this->never())->method('process_pipeline');
 
-        $engine->process_event(null, 'trigger-type-1', $pipeline_config);
+        $engine->process_event(null, 'trigger-type-1', $pipeline_config, 'ipd');
     }
 
-    public function test_process_event_with_correct_trigger_type_should_process_trigger() {
+    public function test_process_event_with_correct_trigger_type_should_process_pipeline() {
         global $DB;
 
         $pipeline_config = array('trigger' => array('type' => 'trigger-type-1'));
+        $trigger = $this->createMock(triggers\moodle_event::class);
+        $trigger->method('extract_data')->willReturn(null);
 
         $engine = $this->getMockBuilder(engine\engine::class)
             ->setConstructorArgs(array(array('DB' => $DB)))
             ->setMethods([
                 'create_trigger',
-                'should_process_trigger',
-                'process_trigger'])
+                'should_process_pipeline',
+                'process_pipeline'])
             ->getMock();
 
-        $engine->method('should_process_trigger')->willReturn(true);
+        $engine->method('create_trigger')->willReturn($trigger);
+
+        $engine->method('should_process_pipeline')->willReturn(true);
 
         $engine->expects($this->once())->method('create_trigger');
-        $engine->expects($this->once())->method('process_trigger');
+        $engine->expects($this->once())->method('process_pipeline');
 
-        $engine->process_event(null, 'trigger-type-1', $pipeline_config);
+        $engine->process_event(array(), 'trigger-type-1', $pipeline_config, 'ipd');
     }
 }
 
