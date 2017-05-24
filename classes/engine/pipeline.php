@@ -4,6 +4,7 @@ namespace local_imtt\engine;
 
 class pipeline {
     public function __construct($params) {
+        $this->instance_pipeline_data = $params['instance_pipeline_data'];
         $this->trigger_data = $params['trigger_data'];
         $this->processors = $params['processors'];
         $this->params = $params['params'];
@@ -27,7 +28,8 @@ class pipeline {
 
     public function create_bundle() {
         $bundle = new bundle();
-        $bundle->write('trigger_data', $this->trigger_data);
+        $bundle->write('imtt', $this->instance_pipeline_data);
+        $bundle->write('trigger', $this->trigger_data);
         $bundle->write('params', $this->params);
         return $bundle;
     }

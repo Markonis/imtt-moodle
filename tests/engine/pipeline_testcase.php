@@ -9,6 +9,7 @@ use local_imtt\engine;
 class local_imtt_pipeline_testcase extends basic_testcase {
     public function test_constructor() {
         $pipeline = new engine\pipeline(array(
+            'instance_pipeline_data' => 'ipd',
             'trigger_data' => array(),
             'processors' => array(),
             'params' => array()));
@@ -16,18 +17,21 @@ class local_imtt_pipeline_testcase extends basic_testcase {
 
     public function test_create_bundle() {
         $pipeline = new engine\pipeline(array(
+            'instance_pipeline_data' => 'ipd',
             'trigger_data' => 'trigger-data',
             'processors' => array(),
             'params' => 'params'));
 
         $result = $pipeline->create_bundle();
-        $this->assertEquals($result->read('trigger_data'), 'trigger-data');
+        $this->assertEquals($result->read('imtt'), 'ipd');
+        $this->assertEquals($result->read('trigger'), 'trigger-data');
         $this->assertEquals($result->read('params'), 'params');
     }
 
     public function test_process_continue() {
         $pipeline = $this->getMockBuilder(engine\pipeline::class)
             ->setConstructorArgs(array(array(
+                'instance_pipeline_data' => 'ipd',
                 'trigger_data' => 'trigger-data',
                 'processors' => array('p1', 'p2'),
                 'params' => 'params')))
@@ -44,6 +48,7 @@ class local_imtt_pipeline_testcase extends basic_testcase {
     public function test_process_stop() {
         $pipeline = $this->getMockBuilder(engine\pipeline::class)
             ->setConstructorArgs(array(array(
+                'instance_pipeline_data' => 'ipd',
                 'trigger_data' => 'trigger-data',
                 'processors' => array('p1', 'p2'),
                 'params' => 'params')))
