@@ -47,7 +47,7 @@
                 },
                 "op2":{
                     "type":"data",
-                    "source":"trigger_data.objectid"
+                    "source":"trigger.objectid"
                 }
             }
         },
@@ -55,6 +55,9 @@
             "type":"middleman_request",
             "path":"/api/google/sheets/update",
             "params":{
+                "token": {
+                    "source":"imtt.provider_access_token",
+                },
                 "sheet_id":{
                     "source":"params.google_sheet_id"
                 },
