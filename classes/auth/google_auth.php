@@ -27,7 +27,7 @@ class google_auth {
         $this->client = get_google_client();
         $this->client->setClientId(get_config('googledocs', 'clientid'));
         $this->client->setClientSecret(get_config('googledocs', 'secret'));
-        $this->client->setScopes(array(\Google_Service_Drive::DRIVE_READONLY));
+        $this->client->setScopes(array(\Google_Service_Drive::DRIVE));
         $this->client->setAccessType('offline');
         $this->client->setRedirectUri($callback_url->out(false));
 
