@@ -1,13 +1,10 @@
 {{^imtt}}
-    <p><a href="{{auth_url}}">Connect with Google</a></p>
+<p><a href="{{auth_url}}">Connect with Google</a></p>
 {{/imtt}}
 
 {{#imtt}}
-    <div ng-app="imtt">
-        <div id="imtt-configuration-editor"
-            data-pipelines='{{pipelines_json}}'
-            data-imtt-configuration='{{configuration_json}}'
-            data-imtt-id="{{id}}">
+    <div>
+        <div id="imtt-configuration-editor" data-imtt-configuration='{{configuration_json}}' data-imtt-id="{{id}}">
 
             <div class="row">
                 <div class="col-sm-5">
@@ -18,7 +15,7 @@
                         </div>
                         <div class="form-group" v-for="param in pipeline.params">
                             <label v-text="param.label"></label>
-                            <input type="text" class="form-control" v-model="param.value"/>
+                            <input type="text" class="form-control" v-model="param.value" />
                         </div>
                     </div>
 

@@ -30,29 +30,9 @@ class imtt_main_page implements renderable, templatable {
         $this->imtt_instance =
             \local_imtt\model\imtt_instance::find_by_course_id($this->DB, $this->course->id);
 
-        $this->pipelines_json = self::load_pipelines_json();
-
         if ($this->imtt_instance != false) {
             $this->PAGE->requires->js_call_amd('local_imtt/configuration_editor', 'init');
         }
-    }
-
-
-    public static function load_pipelines_json() {
-        $pipelines_dir = dirname(dirname(__DIR__)).'/pipelines';
-        $all_files = scandir($pipelines_dir);
-        $pipelines = array();
-
-        foreach ($all_files as $file) {
-            $ext = pathinfo($file, PATHINFO_EXTENSION);
-            if ($ext == 'json') {
-                $pipeline_json = file_get_contents($pipelines_dir.'/'.$file);
-                $pipeline = json_decode($pipeline_json, true);
-                array_push($pipelines, $pipeline);
-            }
-        }
-
-        return json_encode($pipelines);
     }
 
     /**
@@ -67,7 +47,6 @@ class imtt_main_page implements renderable, templatable {
         $data->course_id = $this->course->id;
         $data->error = $this->error;
         $data->auth_url = $this->google_auth->auth_url->out(false);
-        $data->pipelines_json = $this->pipelines_json;
 
         if ($this->imtt_instance != false) {
             $data->imtt = $this->imtt_instance;
