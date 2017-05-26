@@ -3,6 +3,7 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/google/lib.php');
 
 require_login();
+$course_id = required_param('course_id', PARAM_INT);
 $error = optional_param('error', null, PARAM_TEXT);
 
 $PAGE->set_context(context_system::instance());
@@ -14,7 +15,7 @@ $output = $PAGE->get_renderer('local_imtt');
 
 echo $output->header();
 $page = new \local_imtt\output\imtt_main_page(array(
-    'PAGE' => $PAGE, 'DB' => $DB, 'course' => $COURSE, 'error' => $error));
+    'PAGE' => $PAGE, 'DB' => $DB,'course_id' => $course_id, 'error' => $error));
 echo $output->render_page($page);
 echo $output->footer();
 ?>

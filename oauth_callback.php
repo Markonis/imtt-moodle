@@ -22,8 +22,10 @@ if ($code) {
         'provider_name' => 'google',
         'provider_access_token' => $access_token));
 
-    redirect(new moodle_url('/local/imtt/index.php'));
+    redirect(new moodle_url('/local/imtt/index.php',
+        array('course_id' => $course_id)));
 } else {
-    redirect(new moodle_url('/local/imtt/index.php', array('error' => 'OAuth failed.')));
+    redirect(new moodle_url('/local/imtt/index.php',
+        array('course_id' => $course_id, 'error' => 'OAuth failed.')));
 }
 ?>
