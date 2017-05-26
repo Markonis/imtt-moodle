@@ -29,12 +29,14 @@ define(['jquery', 'local_imtt/vue', 'core/ajax'], function($, Vue, ajax) {
         "params": [
             {
                 "id": "moodle_assignment_id",
-                "type": "text",
+                "type": "select",
+                "options": "assignments",
                 "label": "Izaberite zadatak"
             },
             {
                 "id": "google_sheet_id",
-                "type": "text",
+                "type": "select",
+                "options": "googleSheets",
                 "label": "Izaberite Google Sheets dokument"
             },
             {
@@ -115,6 +117,8 @@ define(['jquery', 'local_imtt/vue', 'core/ajax'], function($, Vue, ajax) {
                         })
                     },
                     editor: {
+                        googleSheets: readJSONAttr($el, 'data-google-sheets', []),
+                        assignments: readJSONAttr($el, 'data-assignments', []),
                         pipelines: editorPipelines
                     },
                     chosenPipeline: editorPipelines[0]
@@ -143,6 +147,9 @@ define(['jquery', 'local_imtt/vue', 'core/ajax'], function($, Vue, ajax) {
                         ajax.call([request])[0].done(function(response) {
                             console.log(response);
                         });
+                    },
+                    selectOptions: function(param) {
+                        return this.editor[param.options];
                     }
                 }
             });
