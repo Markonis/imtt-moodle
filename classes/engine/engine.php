@@ -44,8 +44,8 @@ class engine {
         }
     }
 
-    public function should_process_pipeline($trigger, $event) {
-        return $trigger->should_process_trigger($event);
+    public function should_process_pipeline($event, $trigger) {
+        return $trigger->should_process($event);
     }
 
     public function process_pipeline($pipeline_config, $instance_pipeline_data, $trigger_data) {
