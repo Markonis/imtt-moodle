@@ -12,7 +12,21 @@ class moodle_event extends base {
     }
 
     public function extract_data($event) {
-        return (array) $event;
+        return array(
+            'eventname' => $event->eventname,
+            'other' => $event->other,
+            'object' => $this->load_object($event->objectid, $event->objecttable),
+            'user' => $this->load_user($event->userid));
+    }
+
+    public function load_user($id) {
+        return $this->load_object($id, 'user');
+    }
+
+    public function load_object($id, $table) {
+        global $DB;
+        $record = $DB->get_record($table, array('id' => $id));
+        return (array) $record;
     }
 }
 
