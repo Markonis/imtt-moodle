@@ -24,42 +24,36 @@ define(['jquery', 'local_imtt/vue', 'core/ajax'], function($, Vue, ajax) {
         "license": "GPL-3.0",
         "trigger": {
             "type": "moodle_event",
-            "event_name": "\\some\\moodle\\event"
+            "event_name": "\\mod_assign\\event\\assessable_submitted"
         },
-        "params": [
-            {
-                "id": "moodle_assignment_id",
+        "params": {
+            "moodle_assignment_id": {
                 "type": "select",
                 "options": "assignments",
                 "label": "Izaberite zadatak"
             },
-            {
-                "id": "google_sheet_id",
+            "google_sheet_id": {
                 "type": "select",
                 "options": "googleSheets",
                 "label": "Izaberite Google Sheets dokument"
             },
-            {
-                "id": "google_sheet_page",
+            "google_sheet_page": {
                 "type": "text",
                 "label": "Upisite ime strane u Google Sheets dokumentu"
             },
-            {
-                "id": "google_sheet_key_column",
+            "google_sheet_key_column": {
                 "type": "text",
                 "label": "Unesite kolonu koja sadrzi indeks studenta"
             },
-            {
-                "id": "google_sheet_value_column",
+            "google_sheet_value_column": {
                 "type": "text",
                 "label": "Unesite kolonu u koju ce se upisati vrednost"
             },
-            {
-                "id": "google_sheet_value",
+            "google_sheet_value": {
                 "type": "text",
                 "label": "Unesite vrednost koju treba upisati"
             }
-        ],
+        },
         "processors": [
             {
                 "type": "filter",
@@ -71,7 +65,7 @@ define(['jquery', 'local_imtt/vue', 'core/ajax'], function($, Vue, ajax) {
                     },
                     "op2": {
                         "type": "data",
-                        "source": "trigger.objectid"
+                        "source": "trigger.object.assignment"
                     }
                 }
             },
@@ -92,7 +86,7 @@ define(['jquery', 'local_imtt/vue', 'core/ajax'], function($, Vue, ajax) {
                         "source": "params.google_sheet_key_column"
                     },
                     "key_value": {
-                        "source": "trigger.userid"
+                        "source": "trigger.user.email"
                     },
                     "value_column": {
                         "source": "params.google_sheet_value_column"
@@ -145,7 +139,7 @@ define(['jquery', 'local_imtt/vue', 'core/ajax'], function($, Vue, ajax) {
                         };
 
                         ajax.call([request])[0].done(function(response) {
-                            console.log(response);
+                            console.log('Saved!');
                         });
                     },
                     selectOptions: function(param) {
