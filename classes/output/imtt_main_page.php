@@ -25,6 +25,7 @@ class imtt_main_page implements renderable, templatable {
         $this->PAGE = $params['PAGE'];
         $this->course_id = $params['course_id'];
         $this->error = $params['error'];
+        $this->require_js_strings();
 
         $this->google_auth =
             new \local_imtt\auth\google_auth($this->course_id);
@@ -85,6 +86,12 @@ class imtt_main_page implements renderable, templatable {
 
     public function get_config($key) {
         return get_config('local_imtt', $key);
+    }
+
+    public function require_js_strings() {
+        $stringman = get_string_manager();
+        $strings = $stringman->load_component_strings('local_imtt', current_language());
+        $this->PAGE->requires->strings_for_js(array_keys($strings), 'local_imtt');
     }
 
     /**
