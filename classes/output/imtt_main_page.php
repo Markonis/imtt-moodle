@@ -116,7 +116,7 @@ class imtt_main_page implements renderable, templatable {
 
         // I18N
         $data->str = get_strings(
-            array('save','connect_google', 'add_pipeline', 'add'),
+            array('save','connect_google', 'add_pipeline', 'add', 'saved'),
             'local_imtt');
 
         return $data;

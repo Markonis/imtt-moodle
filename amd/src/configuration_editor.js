@@ -22,6 +22,7 @@ define(['jquery', 'local_imtt/vue', 'core/ajax', 'local_imtt/pipelines'], functi
             var app = new Vue({
                 el: selector,
                 data: {
+                    dirty: true,
                     imttInstance: {
                         id: readJSONAttr($el, 'data-imtt-id', null),
                         configuration: readJSONAttr($el, 'data-imtt-configuration', {
@@ -57,11 +58,14 @@ define(['jquery', 'local_imtt/vue', 'core/ajax', 'local_imtt/pipelines'], functi
                         };
 
                         ajax.call([request])[0].done(function(response) {
-                            console.log('Saved!');
+                            self.dirty = false;
                         });
                     },
                     selectOptions: function(param) {
                         return this.editor[param.options];
+                    },
+                    setDirty: function() {
+                        this.dirty = true;
                     }
                 }
             });
