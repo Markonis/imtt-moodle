@@ -6,4 +6,9 @@ $string['middlemanurl_desc'] = 'Enter the URL of the middleman application. For 
 
 $string['middlemanport'] = 'Middleman PORT';
 $string['middlemanport_desc'] = 'Enter the PORT of the middleman application. For example: 3000';
+
+$string['save'] = 'Save';
+$string['connect_google'] = 'Connect with Google';
+$string['add_pipeline'] = 'Add a pipeline';
+$string['add'] = 'Add';
 ?>

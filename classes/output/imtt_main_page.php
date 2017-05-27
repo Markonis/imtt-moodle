@@ -101,12 +101,16 @@ class imtt_main_page implements renderable, templatable {
         $data->google_sheets = json_encode($this->google_sheets);
         $data->assignments = json_encode($this->assignments);
         $data->auth_url = $this->google_auth->auth_url->out(false);
-
         if ($this->imtt_instance != false) {
             $data->imtt = $this->imtt_instance;
         } else {
             $data->imtt = null;
         }
+
+        // I18N
+        $data->str = get_strings(
+            array('save','connect_google', 'add_pipeline', 'add'),
+            'local_imtt');
 
         return $data;
     }

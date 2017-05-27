@@ -1,5 +1,5 @@
 {{^imtt}}
-<p><a class="btn btn-primary" href="{{auth_url}}">Connect with Google</a></p>
+<p><a class="btn btn-primary" href="{{auth_url}}">{{str.connect_google}}</a></p>
 {{/imtt}}
 
 {{#imtt}}
@@ -25,7 +25,7 @@
                     <hr/>
 
                     <div class="form-group">
-                        <label>Add a pipeline</label>
+                        <label>{{str.add_pipeline}}</label>
                         <div class="row">
                             <div class="col-sm-9">
                                 <select class="form-control" v-model="chosenPipeline">
@@ -33,7 +33,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-3">
-                                <button class="btn btn-default" v-on:click="addPipeline">Add</button>
+                                <button class="btn btn-default" v-on:click="addPipeline">{{str.add}}</button>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                     <hr/>
 
                     <div>
-                        <button class="btn btn-primary" v-on:click="save">Save</button>
+                        <button class="btn btn-primary" v-on:click="save">{{str.save}}</button>
                     </div>
                 </div>
             </div>
