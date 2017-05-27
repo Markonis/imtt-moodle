@@ -7,7 +7,7 @@ class pipeline {
         $this->instance_pipeline_data = $params['instance_pipeline_data'];
         $this->trigger_data = $params['trigger_data'];
         $this->processors = $params['processors'];
-        $this->params = $params['params'];
+        $this->params = $this->process_params($params['params']);
     }
 
     public function process() {
@@ -32,6 +32,15 @@ class pipeline {
         $bundle->write('trigger', $this->trigger_data);
         $bundle->write('params', $this->params);
         return $bundle;
+    }
+
+    public function process_params($params) {
+        $result = array();
+        $keys = array_keys($params);
+        foreach ($keys as $key) {
+            $result[$key] = $params[$key]['value'];
+        }
+        return $result;
     }
 }
 
