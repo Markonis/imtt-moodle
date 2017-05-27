@@ -19,11 +19,10 @@ class imtt_instance {
         $this->provider_name         = $array['provider_name'];
         $this->provider_access_token = $array['provider_access_token'];
         $this->configuration_json    = $array['configuration_json'];
-        $this->configuration         = json_decode($this->configuration_json);
         $this->event_names           = $array['event_names'];
 
         if ($this->configuration_json != null) {
-            $this->configuration = json_decode($this->configuration_json);
+            $this->configuration = json_decode($this->configuration_json, true);
         }
 
         $this->pipeline_data = array(
@@ -53,7 +52,7 @@ class imtt_instance {
     }
 
     public static function all($DB) {
-        $records = $DB->get_records($table,array('foo'=>'bar'));
+        $records = $DB->get_records('local_imtt');
         $all = array();
         foreach ($records as $rec) {
             array_push($all, new imtt_instance($DB, $rec));
