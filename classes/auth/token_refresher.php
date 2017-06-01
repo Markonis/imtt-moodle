@@ -22,7 +22,9 @@ class token_refresher {
         $client = get_google_client();
         $client->setAccessToken($this->access_token);
         if ($client->isAccessTokenExpired()) $client->refreshToken();
-        return $client->getAccessToken();
+        $tokens = json_decode($client->getAccessToken(), true);
+        $tokens['refresh_token'] = $client->getRefreshToken();
+        return json_encode($tokens);
     }
 }
 
