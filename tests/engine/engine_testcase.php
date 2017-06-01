@@ -30,12 +30,13 @@ class local_imtt_engine_testcase extends basic_testcase {
     public function test_create_pipeline() {
         global $DB;
         $engine = new engine\engine(array('DB' => $DB));
-        $pipeline = $engine->create_pipeline('ipd', 'td', 'par', 'proc');
+        $params = array('test' => array('value' => 1));
+        $pipeline = $engine->create_pipeline('ipd', 'td', $params, 'proc');
 
         $this->assertInstanceOf(engine\pipeline::class, $pipeline);
         $this->assertEquals($pipeline->instance_pipeline_data, 'ipd');
         $this->assertEquals($pipeline->trigger_data, 'td');
-        $this->assertEquals($pipeline->params, 'par');
+        $this->assertEquals($pipeline->params, array('test' => 1));
         $this->assertEquals($pipeline->processors, 'proc');
     }
 
@@ -79,7 +80,10 @@ class local_imtt_engine_testcase extends basic_testcase {
                 'process_event'])
             ->getMock();
 
-        $imtt_instance = new stdClass();
+        $imtt_instance = $this->createMock(model\imtt_instance::class);
+
+        $imtt_instance->expects($this->once())
+            ->method('refresh_provider_token');
 
         $imtt_instance->pipeline_data = array(
             'provider_access_token' => 'pat');
