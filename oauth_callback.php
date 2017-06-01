@@ -14,13 +14,15 @@ if ($code) {
     // Get Google access token
     $google_auth = new \local_imtt\auth\google_auth($course_id);
     $google_auth->client->authenticate($code);
-    $access_token = $google_auth->client->getAccessToken();
+
+    $tokens = json_decode($google_auth->client->getAccessToken(), true);
+    $tokens['refresh_token'] = $google_auth->client->getRefreshToken();
 
     // Create an IMTT instance for this course with the Google access token
     $result = \local_imtt\model\imtt_instance::create($DB, array(
         'course_id' => $course_id,
         'provider_name' => 'google',
-        'provider_access_token' => $access_token));
+        'provider_access_token' => json_encode($tokens)));
 
     redirect(new moodle_url('/local/imtt/index.php',
         array('course_id' => $course_id)));
