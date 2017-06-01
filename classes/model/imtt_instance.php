@@ -3,6 +3,7 @@
 namespace local_imtt\model;
 defined('MOODLE_INTERNAL') || die();
 
+use local_imtt\auth;
 require_once($CFG->libdir . '/google/lib.php');
 
 /**
@@ -24,9 +25,6 @@ class imtt_instance {
         if ($this->configuration_json != null) {
             $this->configuration = json_decode($this->configuration_json, true);
         }
-
-        $this->pipeline_data = array(
-            'provider_access_token' => $this->provider_access_token);
     }
 
     public static function find_by_course_id($DB, $course_id) {
@@ -77,6 +75,20 @@ class imtt_instance {
 
     public function destroy() {
         $this->$DB->delete_records('local_imtt', array('id' => $this->id));
+    }
+
+    public function refresh_provider_token() {
+        $token_refresher = new auth\token_refresher(array(
+            'provider_name' => $this->provider_name,
+            'access_token' => $this->provider_access_token));
+
+        $access_token = $token_refresher->refresh();
+        $this->update(array('provider_access_token' => $access_token));
+        $this->provider_access_token = $access_token;
+    }
+
+    public function get_pipeline_data() {
+        return array('provider_access_token' => $this->provider_access_token);
     }
 }
 ?>
