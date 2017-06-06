@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/imtt/db" VERSION="20170510" COMMENT="XMLDB file for Moodle local/imtt"
+<XMLDB PATH="local/imtt/db" VERSION="20170606" COMMENT="XMLDB file for Moodle local/imtt"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -7,10 +7,19 @@
     <TABLE NAME="local_imtt" COMMENT="This is the main table for the IMTT plugin.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="provider_name" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" COMMENT="This is going to be the service provider we are connecting with. For example: google, facebook, etc..."/>
-        <FIELD NAME="provider_access_token" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="This is going to be the OAuth access token for this particular integration."/>
         <FIELD NAME="configuration_json" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="This is a JSON-encoded configuration for the IMTT plugin"/>
-        <FIELD NAME="event_names" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="This is a string that will allow us to filter any IMTT instances based on which event they listen for inside Moodle. It should be a space-delimited list of Moodle events, for example:  &quot;\mod_quiz\event\attempt_started \mod_quiz\event\attempt_submitted&quot;"/>
+        <FIELD NAME="token_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="This is the foreign key field for the local_imtt_token table"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="token_id" TYPE="foreign" FIELDS="token_id" REFTABLE="local_imtt_token" REFFIELDS="id" COMMENT="This is the foreign key for the token_id field"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_imtt_token" COMMENT="This table is going to store tokens for authenticated users">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="provider_name" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false" COMMENT="This is the name of the provider of the token. For example: &quot;google&quot;"/>
+        <FIELD NAME="provider_access_token" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="This is the access token from the provider"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
