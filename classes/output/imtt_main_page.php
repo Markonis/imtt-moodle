@@ -34,6 +34,7 @@ class imtt_main_page implements renderable, templatable {
             \local_imtt\model\imtt_instance::find_by_course_id($this->DB, $this->course_id);
 
         $this->assignments = $this->load_course_assignments();
+        $this->quizes = $this->load_course_quizes();
 
         if ($this->imtt_instance != false) {
             $this->imtt_instance->refresh_provider_token();
@@ -85,6 +86,22 @@ class imtt_main_page implements renderable, templatable {
         return $result;
     }
 
+    public function load_course_quizes() {
+        $records = $this->DB->get_records('quiz',
+            array('course' => $this->course_id));
+        return $this->course_quizes_options($records);
+    }
+
+    public function course_quizes_options($quizes) {
+        $result = array();
+        foreach ($quizes as $quiz) {
+            array_push($result, array(
+                'value' => $quiz->id,
+                'label' => $quiz->name));
+        }
+        return $result;
+    }
+
     public function get_config($key) {
         return get_config('local_imtt', $key);
     }
@@ -108,6 +125,7 @@ class imtt_main_page implements renderable, templatable {
         $data->error = $this->error;
         $data->google_sheets = json_encode($this->google_sheets);
         $data->assignments = json_encode($this->assignments);
+        $data->quizes = json_encode($this->quizes);
         $data->auth_url = $this->google_auth->auth_url->out(false);
         if ($this->imtt_instance != false) {
             $data->imtt = $this->imtt_instance;

@@ -32,6 +32,7 @@ define(['jquery', 'local_imtt/vue', 'core/ajax', 'local_imtt/pipelines'], functi
                     editor: {
                         googleSheets: readJSONAttr($el, 'data-google-sheets', []),
                         assignments: readJSONAttr($el, 'data-assignments', []),
+                        quizes: readJSONAttr($el, 'data-quizes', []),
                         pipelines: editorPipelines
                     },
                     chosenPipeline: editorPipelines[0]

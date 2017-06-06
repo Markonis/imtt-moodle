@@ -20,4 +20,13 @@ $string['pipelines.assignment_submission_sheets.params.google_sheet_page'] = 'Ch
 $string['pipelines.assignment_submission_sheets.params.google_sheet_key_column'] = 'Choose the column with student\'s email' ;
 $string['pipelines.assignment_submission_sheets.params.google_sheet_value_column'] = 'Choose the column where to write';
 $string['pipelines.assignment_submission_sheets.params.google_sheet_value'] = 'What should be written?';
+
+$string['pipelines.quiz_submission_sheets.name'] = 'Sync quiz attempts to Google Sheets';
+$string['pipelines.quiz_submission_sheets.params.moodle_quiz_id'] = 'Choose the quiz';
+$string['pipelines.quiz_submission_sheets.params.google_sheet_id'] = 'Choose the Google Sheet document';
+$string['pipelines.quiz_submission_sheets.params.google_sheet_page'] = 'Choose the document page';
+$string['pipelines.quiz_submission_sheets.params.google_sheet_key_column'] = 'Choose the column with student\'s email' ;
+$string['pipelines.quiz_submission_sheets.params.google_sheet_grade_column'] = 'Choose the column where to write the grade';
+$string['pipelines.quiz_submission_sheets.params.google_sheet_timestamp_column'] = 'Choose the column where to write the timestamp';
+
 ?>
