@@ -35,6 +35,17 @@ class imtt_token {
         }
     }
 
+    public static function find_by_user_id($DB, $id) {
+        $record = $DB->get_record('local_imtt_token',
+            array('user_id' => $id), '*', IGNORE_MISSING);
+
+        if ($record == false) {
+            return false;
+        } else{
+            return new imtt_token($DB, $record);
+        }
+    }
+
     public static function create($DB, $params) {
         $id = $DB->insert_record('local_imtt_token', $params);
         if ($id > 0) {
@@ -50,7 +61,7 @@ class imtt_token {
         return $result;
     }
 
-    public function refresh_provider_token() {
+    public function refresh_token() {
         $token_refresher = new auth\token_refresher(array(
             'provider_name' => $this->provider_name,
             'access_token' => $this->provider_access_token));

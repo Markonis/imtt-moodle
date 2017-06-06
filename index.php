@@ -14,8 +14,11 @@ $PAGE->set_pagelayout('standard');
 $output = $PAGE->get_renderer('local_imtt');
 
 echo $output->header();
+
 $page = new \local_imtt\output\imtt_main_page(array(
-    'PAGE' => $PAGE, 'DB' => $DB,'course_id' => $course_id, 'error' => $error));
+    'PAGE' => $PAGE, 'DB' => $DB, 'USER' => $USER,
+    'course_id' => $course_id, 'error' => $error));
+
 echo $output->render_page($page);
 echo $output->footer();
 ?>

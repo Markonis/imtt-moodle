@@ -8,6 +8,8 @@ use templatable;
 use stdClass;
 
 use local_imtt\http;
+use local_imtt\model;
+use local_imtt\auth;
 
 /**
  * Class containing data for IMTT main page
@@ -21,25 +23,44 @@ class imtt_main_page implements renderable, templatable {
      * Construct the page renderable and build the Google OAuth client.
      */
     public function __construct($params) {
+        $this->USER = $params['USER'];
         $this->DB = $params['DB'];
         $this->PAGE = $params['PAGE'];
         $this->course_id = $params['course_id'];
         $this->error = $params['error'];
         $this->require_js_strings();
 
-        $this->google_auth =
-            new \local_imtt\auth\google_auth($this->course_id);
-
-        $this->imtt_instance =
-            \local_imtt\model\imtt_instance::find_by_course_id($this->DB, $this->course_id);
-
+        $this->google_auth = new auth\google_auth($this->course_id);
+        $this->imtt_instance = $this->load_or_create_imtt_instance();
         $this->assignments = $this->load_course_assignments();
         $this->quizes = $this->load_course_quizes();
 
         if ($this->imtt_instance != false) {
-            $this->imtt_instance->refresh_provider_token();
+            $this->imtt_instance->refresh_token();
             $this->google_sheets = $this->load_google_sheets();
             $this->PAGE->requires->js_call_amd('local_imtt/configuration_editor', 'init');
+        }
+    }
+
+    public function load_or_create_imtt_instance() {
+        $instance = model\imtt_instance::find_by_course_id(
+            $this->DB, $this->course_id);
+
+        if ($instance == false) {
+            return $this->create_imtt_instance();
+        } else {
+            return $instance;
+        }
+    }
+
+    public function create_imtt_instance() {
+        $token = model\imtt_token::find_by_user_id($this->DB, $this->USER->id);
+        if ($token == false) {
+            return false;
+        } else {
+            return model\imtt_instance::create($this->DB, array(
+                'course_id' => $this->course_id,
+                'token_id' => $token->id));
         }
     }
 
@@ -47,7 +68,7 @@ class imtt_main_page implements renderable, templatable {
         $path = '/api/google/sheets/list';
         $middleman_url = $this->get_config('middlemanurl');
         $middleman_port = $this->get_config('middlemanport');
-        $token = $this->imtt_instance->provider_access_token;
+        $token = $this->imtt_instance->token->provider_access_token;
 
         $url = $middleman_url . ':' . $middleman_port . $path;
         $request_data = array('token' => $token);

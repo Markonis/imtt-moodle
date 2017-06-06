@@ -83,7 +83,7 @@ class local_imtt_engine_testcase extends basic_testcase {
         $imtt_instance = $this->createMock(model\imtt_instance::class);
 
         $imtt_instance->expects($this->once())
-            ->method('refresh_provider_token');
+            ->method('refresh_token');
 
         $imtt_instance->pipeline_data = array(
             'provider_access_token' => 'pat');

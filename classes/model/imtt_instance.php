@@ -4,6 +4,8 @@ namespace local_imtt\model;
 defined('MOODLE_INTERNAL') || die();
 
 use local_imtt\auth;
+use local_imtt\model;
+
 require_once($CFG->libdir . '/google/lib.php');
 
 /**
@@ -16,11 +18,10 @@ class imtt_instance {
 
         $this->DB                    = $DB;
         $this->id                    = $array['id'];
+        $this->token_id              = $array['token_id'];
         $this->course_id             = $array['course_id'];
-        $this->provider_name         = $array['provider_name'];
-        $this->provider_access_token = $array['provider_access_token'];
         $this->configuration_json    = $array['configuration_json'];
-        $this->event_names           = $array['event_names'];
+        $this->token                 = $this->load_token();
 
         if ($this->configuration_json != null) {
             $this->configuration = json_decode($this->configuration_json, true);
@@ -77,18 +78,16 @@ class imtt_instance {
         $this->$DB->delete_records('local_imtt', array('id' => $this->id));
     }
 
-    public function refresh_provider_token() {
-        $token_refresher = new auth\token_refresher(array(
-            'provider_name' => $this->provider_name,
-            'access_token' => $this->provider_access_token));
+    public function load_token() {
+        return model\imtt_token::find_by_id($this->DB, $this->token_id);
+    }
 
-        $access_token = $token_refresher->refresh();
-        $this->update(array('provider_access_token' => $access_token));
-        $this->provider_access_token = $access_token;
+    public function refresh_token() {
+        $this->token->refresh_token();
     }
 
     public function get_pipeline_data() {
-        return array('provider_access_token' => $this->provider_access_token);
+        return array('provider_access_token' => $this->token->provider_access_token);
     }
 }
 ?>

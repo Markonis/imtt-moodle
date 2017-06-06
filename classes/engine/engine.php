@@ -19,7 +19,7 @@ class engine {
         $imtt_instances = $this->load_imtt_instances();
         foreach ($imtt_instances as $instance) {
             $instance_config = $instance->configuration;
-            $instance->refresh_provider_token();
+            $instance->refresh_token();
             $instance_pipeline_data = $instance->get_pipeline_data();
             foreach ($instance_config['pipelines'] as $pipeline_config) {
                 $this->process_event($event, 'moodle_event', $pipeline_config, $instance_pipeline_data);
