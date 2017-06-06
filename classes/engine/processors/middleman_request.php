@@ -15,6 +15,7 @@ class middleman_request extends base {
         $url = $this->url();
         $request_data = $this->request_data($bundle);
         $this->send_request($url, $request_data);
+        return $this->continue_processing($bundle);
     }
 
     public function url() {
