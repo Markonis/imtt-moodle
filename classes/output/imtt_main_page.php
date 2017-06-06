@@ -36,6 +36,7 @@ class imtt_main_page implements renderable, templatable {
         $this->assignments = $this->load_course_assignments();
 
         if ($this->imtt_instance != false) {
+            $this->imtt_instance->refresh_provider_token();
             $this->google_sheets = $this->load_google_sheets();
             $this->PAGE->requires->js_call_amd('local_imtt/configuration_editor', 'init');
         }
