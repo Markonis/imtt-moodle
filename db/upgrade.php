@@ -132,5 +132,28 @@ function xmldb_local_imtt_upgrade($oldversion) {
         // Imtt savepoint reached.
         upgrade_plugin_savepoint(true, 2017060601, 'local', 'imtt');
     }
+
+    if ($oldversion < 2017060602) {
+
+        // Define field user_id to be added to local_imtt_token.
+        $table = new xmldb_table('local_imtt_token');
+        $field = new xmldb_field('user_id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, 'provider_access_token');
+
+        // Conditionally launch add field user_id.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define key user_id (foreign) to be added to local_imtt_token.
+        $table = new xmldb_table('local_imtt_token');
+        $key = new xmldb_key('user_id', XMLDB_KEY_FOREIGN, array('user_id'), 'user', array('id'));
+
+        // Launch add key user_id.
+        $dbman->add_key($table, $key);
+
+        // Imtt savepoint reached.
+        upgrade_plugin_savepoint(true, 2017060602, 'local', 'imtt');
+    }
+
 }
 ?>

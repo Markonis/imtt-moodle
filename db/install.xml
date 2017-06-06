@@ -20,9 +20,11 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="provider_name" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false" COMMENT="This is the name of the provider of the token. For example: &quot;google&quot;"/>
         <FIELD NAME="provider_access_token" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="This is the access token from the provider"/>
+        <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="This is the field for the user_id foreign key"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="user_id" TYPE="foreign" FIELDS="user_id" REFTABLE="user" REFFIELDS="id" COMMENT="This is the foreign key for the user table"/>
       </KEYS>
     </TABLE>
   </TABLES>
